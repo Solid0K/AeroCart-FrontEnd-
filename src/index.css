@@ -1,0 +1,108 @@
+/* ---- AeroCart type system ----
+   Display: Clash Display  — bold, geometric, used sparingly for hero/headings
+   Body:    General Sans   — clean, warm, does the reading work
+   Mono:    JetBrains Mono — prices, SKUs, order IDs, stock counts
+*/
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Clash Display", "General Sans", sans-serif;
+  --font-body: "General Sans", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Core surfaces */
+  --color-bg: #0F172A;
+  --color-surface: #1E293B;
+  --color-card: #334155;
+
+  /* Brand */
+  --color-primary: #6366F1;
+  --color-primary-hover: #818CF8;
+  --color-secondary: #06B6D4;
+  --color-accent: #F59E0B;
+
+  /* Status */
+  --color-success: #22C55E;
+  --color-danger: #EF4444;
+
+  /* Text */
+  --color-text: #F8FAFC;
+  --color-text-muted: #CBD5E1;
+  --color-text-faint: #94A3B8;
+
+  /* Category identity palette — each product category is assigned one of
+     these in a stable rotation (see utils/categoryColor.js). This is the
+     "colored rail" signature used on cards, badges and the command palette. */
+  --color-cat-violet: #8B5CF6;
+  --color-cat-cyan: #06B6D4;
+  --color-cat-amber: #F59E0B;
+  --color-cat-rose: #FB7185;
+  --color-cat-emerald: #34D399;
+  --color-cat-sky: #38BDF8;
+
+  --radius-card: 1rem;
+  --shadow-soft: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  --shadow-glow-primary: 0 0 0 1px rgba(99,102,241,0.35), 0 8px 30px -6px rgba(99,102,241,0.35);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-bg text-text font-body antialiased;
+    font-feature-settings: "ss01" on, "cv01" on;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+  }
+  /* visible focus ring everywhere, respects keyboard-only users */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-card);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-text-faint); }
+}
+
+@layer utilities {
+  .surface-card {
+    background: color-mix(in oklab, var(--color-card) 55%, var(--color-surface));
+    border: 1px solid color-mix(in oklab, white 6%, transparent);
+  }
+  .glass {
+    background: color-mix(in oklab, var(--color-surface) 70%, transparent);
+    backdrop-filter: blur(14px);
+  }
+  .text-balance { text-wrap: balance; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer utilities {
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(var(--float-rotate, 0deg)); }
+    50% { transform: translateY(-10px) rotate(var(--float-rotate, 0deg)); }
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
